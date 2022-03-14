@@ -3,5 +3,5 @@ feature "visiting index page" do
     visit "/"
     expect(page).to have_content "Bookmark manager supreme"
   end
-  end
+end
 
