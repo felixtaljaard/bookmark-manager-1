@@ -12,8 +12,8 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/bookmarks' do
-    @list = List.new.view_list
-    erb :bookmark
+    @list = List.view_list
+    erb :'bookmarks/index'
   end
 
   run! if app_file == $0

@@ -1,7 +1,13 @@
 require 'list'
 
 describe List do
-  it 'returns a list of bookmarks' do
-  expect(subject.view_list).to be_an_instance_of(Array)
+  describe '.view_list' do
+    it 'returns all bookmarks' do
+      bookmarks = List.view_list
+
+    expect(bookmarks).to include "http://www.makersacademy.com"
+    expect(bookmarks).to include "http://www.destroyallsoftware.com"
+    expect(bookmarks).to include "http://www.google.com"
+    end
   end
 end
