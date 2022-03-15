@@ -11,7 +11,9 @@ class BookmarkManager < Sinatra::Base
     erb :index
   end
 
-  post '/bookmarks' do
+  get '/bookmarks' do
+    p ENV
+
     @list = List.view_list
     erb :'bookmarks/index'
   end
