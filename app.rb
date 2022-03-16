@@ -13,25 +13,22 @@ class BookmarkManager < Sinatra::Base
   end
 
   get '/bookmarks' do
-    p ENV
+
 
     @list = List.view_list
     erb :'bookmarks/index'
   end
 
   get '/bookmarks/add' do
-    p ENV
 
     erb :'bookmarks/add'
   end
   
   post '/bookmarks' do
-    p ENV
     p params
 
     url = params[:url]
-    connection = PG.connect(dbname: 'bookmark_manager_test')
-    connection.exec("INSERT INTO bookmarks (url) VALUES('#{url}')")
+    List.create(url)
     redirect '/bookmarks'
   end
 
