@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'sinatra/reloader'
 require_relative 'lib/list'
 require 'pg'
+require './lib/bookmark'
 
 class BookmarkManager < Sinatra::Base
   configure :development do
@@ -25,7 +26,7 @@ class BookmarkManager < Sinatra::Base
   end
   
   post '/bookmarks' do
-    List.create(url: params[:url])
+    List.create(Bookmark.new(params[:title], params[:url]))
     redirect '/bookmarks'
   end
 

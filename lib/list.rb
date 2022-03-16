@@ -2,24 +2,24 @@ require 'pg'
 
 class List
   def self.view_list
-    p ENV['ENVIRONMENT']
-    if ENV['ENVIRONMENT'] == 'test'
-      connection = PG.connect(dbname: 'bookmark_manager_test')
-    else
-      connection = PG.connect(dbname: 'bookmark_manager')
-    end
-    
-    result = connection.exec("SELECT * FROM bookmarks;")
-    result.map { |bookmark| bookmark['url']}
+    connect_database
+    result = @connection.exec("SELECT * FROM bookmarks;")
+    result.map { |bookmark| Bookmark.new(bookmark['title'], bookmark['url']) } 
   end
 
-  def self.create(url:)
-    if ENV['ENVIRONMENT'] == 'test'
-      connection = PG.connect(dbname: 'bookmark_manager_test')
-    else
-      connection = PG.connect(dbname: 'bookmark_manager')
-    end
-  
-    connection.exec("INSERT INTO bookmarks (url) VALUES('#{url}')")
+  def self.create(bookmark)
+    connect_database
+    @connection.exec("INSERT INTO bookmarks (url, title) VALUES('#{bookmark.url}', '#{bookmark.title}')")
   end
+
+  private
+
+  def self.connect_database
+    if ENV['ENVIRONMENT'] == 'test'
+      @connection = PG.connect(dbname: 'bookmark_manager_test')
+    else
+      @connection = PG.connect(dbname: 'bookmark_manager')
+    end
+  end
+  
 end
