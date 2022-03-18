@@ -1,4 +1,5 @@
 require 'pg'
+require 'uri'
 
 class List
   def self.view_list
@@ -7,6 +8,7 @@ class List
   end
 
   def self.create(bookmark)
+    return false unless bookmark.url =~ /\A#{URI::regexp(['http', 'https'])}\z/
     DatabaseConnection.query("INSERT INTO bookmarks (url, title) VALUES($1, $2);", [bookmark.url, bookmark.title])
   end
 

@@ -6,6 +6,7 @@ describe List do
   let(:bookmark2) { double(:bookmark, title: 'Destroy all Software', url: 'http://www.destroyallsoftware.com', id: "2")}
   let(:bookmark2_updated) { double(:bookmark, title: 'Destroy', url: 'http://www.destroy.com', id: "2")}
   let(:bookmark3) { double(title: 'Google', url: 'http://www.google.com') }
+  let(:invalid_bookmark) { double(title:'Twitter', url: 'twitter') }
 
   context "with mocks"
   before do
@@ -29,6 +30,10 @@ describe List do
     it 'creates a new bookmark' do
       List.create(bookmark1)
       expect(List.view_list).to include bookmark1
+    end
+    it 'does not create a bookmark if url is invalid' do
+      List.create(invalid_bookmark)
+      expect(List.view_list).to be_empty
     end
   end
 

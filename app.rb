@@ -1,15 +1,19 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
+require 'sinatra/flash'
 require_relative 'lib/list'
 require 'pg'
 require './lib/bookmark'
 require './database_connection_setup'
+require 'uri'
 
 class BookmarkManager < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
   end
+  register Sinatra::Flash
 
+  enable :sessions
   enable :method_override
 
   get '/' do
@@ -22,13 +26,13 @@ class BookmarkManager < Sinatra::Base
   end
 
   get '/bookmarks/add' do
-
     erb :'bookmarks/add'
   end
   
   post '/bookmarks' do
-    List.create(Bookmark.new(params[:title], params[:url]))
-    redirect '/bookmarks'
+    redirect '/bookmarks' if List.create(Bookmark.new(params[:title], params[:url]))
+    flash[:notice] = 'Invalid URL'
+    redirect '/bookmarks/add'
   end
 
   delete '/bookmarks/delete_bookmark/:id' do

@@ -1,3 +1,9 @@
+<% flash.keys.each do |type| %>
+  <div data-alert class="flash <%= type %> alert-box radius">
+    <%= flash[type] %>
+  </div>
+<% end %>
+
 <form action="/bookmarks" method="post">
   <input type='text' name='title'/>
   <input type="text" name="url" />
